@@ -95,7 +95,6 @@ class MyTextBar extends StatefulWidget {
 
 class _Mytextbar extends State<MyTextBar> {
   final TextEditingController _controller = TextEditingController();
-
   void _submit(BuildContext context) {
     FocusScope.of(context).unfocus();
     final String namauser = _controller.text.trim();
