@@ -92,9 +92,13 @@ class Detail extends StatelessWidget {
 
               // --- Bar biru ---
               Container(
+                margin: EdgeInsets.all(24),
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                color: const Color(0xFF174B73), // biru gelap
+                decoration: BoxDecoration(
+                  color: const Color(0xFF174B73),
+                  borderRadius: BorderRadius.circular(10)
+                ),
                 child: const Center(
                   child: Text(
                     "Pengiriman dari Jakarta Selatan",
@@ -182,6 +186,7 @@ class Detail extends StatelessWidget {
               ),
             ],
           ),
+          
             ],
           ),
         ),
@@ -271,7 +276,7 @@ class Detail extends StatelessWidget {
         children: [
           Icon(icon, color: Colors.grey.shade700),
           const SizedBox(width: 12),
-          Expanded(
+          Flexible(
             child: Text(
               text,
               style: const TextStyle(fontSize: 14),

@@ -1,6 +1,5 @@
+import 'package:fioke/beranda.dart';
 import 'package:flutter/material.dart';
-import 'package:fioke/card/cardproduk.dart';
-import 'package:fioke/data/dataproduk.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,132 +14,153 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'FIOKE',
       theme: ThemeData(
+        useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF1F4E78)),
       ),
-      home: FiokeMain(),
+      home: LoginPage(),
     );
   }
 }
 
-class FiokeMain extends StatelessWidget {
-  const FiokeMain({super.key});
-  
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
   @override
   Widget build(BuildContext context) {
-    const int PrimaryColor = 0xFF1F4E78;
-
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child:   Column(
-          children: [
-            Container(
-                width: double.infinity,
-                height: 200,
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Color(PrimaryColor),
-                  borderRadius: BorderRadius.only(bottomLeft:Radius.circular(40),bottomRight: Radius.circular(40))
-                ) ,
-                child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Selamat Datang!",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                  Text(
-                    "IhsanMustaqim",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
-                  ),
-                  SizedBox(height: 30),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          style: TextStyle(color: Colors.white),
-                          cursorColor: Colors.white,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white.withOpacity(0.2),
-                            iconColor: Colors.white,
-                            hintText: "Teh botol Sosro",
-                            hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
-                            prefixIcon: Icon(Icons.search, color: Colors.white),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              vertical: 0,
-                              horizontal: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Icon(Icons.notifications,color: Colors.white,),
-                      SizedBox(width: 10),
-                      Icon(Icons.shopping_bag,color: Colors.white,),
-                    ],
-                  ),
-                ],
-              
-              )
+        child: Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF1F4E78), Color(0xFF163A59)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
-          Container(
-          height: 180,
-          margin: EdgeInsets.fromLTRB(0, 40, 0,40),
-          child: PageView.builder(
-            itemCount: 4, // jumlah banner
-            itemBuilder: (context, index) {
-              return Image.asset('images/banner.png');
-            },
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 420),
+                child: Card(
+                  elevation: 10,
+                  shadowColor: Colors.black26,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 8),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.water_drop, color: Color(0xFF1F4E78), size: 36),
+                            SizedBox(width: 8),
+                            Text(
+                              'FIOKE',
+                              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Masuk untuk mulai belajar',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.black54),
+                        ),
+                        const SizedBox(height: 24),
+                        MyTextBar(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
-        // TERLARIS
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text("TERLARIS", style: TextStyle(fontWeight: FontWeight.bold)),
+      ),
+    );
+  }
+}
+
+class MyTextBar extends StatefulWidget {
+  MyTextBar({super.key});
+  @override
+  State<StatefulWidget> createState() => _Mytextbar();
+}
+
+class _Mytextbar extends State<MyTextBar> {
+  final TextEditingController _controller = TextEditingController();
+
+  void _submit(BuildContext context) {
+    FocusScope.of(context).unfocus();
+    final String namauser = _controller.text.trim();
+    if (namauser.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Nama tidak boleh kosong")),
+      );
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FiokeMain(namauser: namauser),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TextField(
+          controller: _controller,
+          textInputAction: TextInputAction.done,
+          onSubmitted: (_) => _submit(context),
+          decoration: InputDecoration(
+            hintText: "Masukkan nama anda",
+            prefixIcon: const Icon(Icons.person_outline),
+            filled: true,
+            fillColor: Colors.grey.shade50,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Color(0xFFE0E0E0)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Color(0xFF1F4E78), width: 2),
+            ),
           ),
         ),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.all(16),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 0.7,
+        const SizedBox(height: 16),
+        ElevatedButton.icon(
+          onPressed: () => _submit(context),
+          icon: const Icon(Icons.login),
+          label: const Text("Masuk"),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF1F4E78),
+            foregroundColor: Colors.white,
+            minimumSize: const Size(double.infinity, 48),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
-          itemCount: dataproduk.length,
-          itemBuilder: (context, index) {
-            final produk = dataproduk[index];
-            return CardProduk(
-              nama: produk.nama,
-              harga: produk.harga,
-              gambar: produk.gambar,
-            );
-          },
         ),
       ],
-    ),
-  ), 
-),
- persistentFooterButtons: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.access_alarm)),
-      ],
-);
+    );
   }
 }
